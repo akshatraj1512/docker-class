@@ -30,5 +30,13 @@ python script.py
 cd /pipeline
 uv run python pipeline.py <any_integer>
 ```
+## 3. Creating a Dockerfile.
+  
+- In terminal:
 
-
+```bash
+docker build -t test:pandas .
+```
+```bash
+docker run -it test:pandas < any number >
+```
