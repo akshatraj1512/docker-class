@@ -35,6 +35,7 @@ uv run python pipeline.py <any_integer>
 - In terminal:
 
 ```bash
+cd pipeline
 docker build -t test:pandas .
 ```
 ```bash
