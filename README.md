@@ -1,6 +1,6 @@
 # docker-class
 
-## 1. Executing Local Scripts inside a Docker Container (Bind Mounts).
+## 1. Executing Local Scripts inside a Docker Container (Named Volumes).
 
 - Prerequisites:
 
@@ -41,3 +41,29 @@ docker build -t test:pandas .
 ```bash
 docker run -it test:pandas < any number >
 ```
+
+## 3. Running Postgres SQL inside Docker (Bind Mounds).
+  
+- In terminal:
+
+```bash
+cd pipeline
+uv run pip install pgcli
+uv run pgcli -h localhost -p 5432 -u root -d ny_taxi
+```
+
+  Inside Postgres :
+
+  ```bash
+  \dt
+  -- List tables
+\dt
+
+CREATE TABLE test (id INTEGER, name VARCHAR(50));
+
+INSERT INTO test VALUES (1, 'vadapav');
+
+SELECT * FROM test;
+
+\q
+  ```
