@@ -67,13 +67,35 @@ uv run pgcli -h localhost -p 5432 -u root -d ny_taxi
   ```
 
 ## 5. Data processing with pandas and data ingestion (chunking).
-  
+
+Refer to `ingestion.py`.  
+ 
 - In terminal:
 
 ```bash
-uv add --dev jupyter
-uv run jupyter notebook
+cd pipeline
+uv run ingestion.py --year 2021 --month <any_month_upto_7>
 ```
-- In notebook:
+After the ingestion is complete, test the table created:
 
-Refer to `ingestion.py`.
+```bash
+uv run pgcli -h localhost -p 5432 -u root -d ny_taxi
+```
+
+  Inside Postgres :
+
+  ```bash
+  SELECT COUNT(*) FROM yellow_taxi_trips;
+
+  SELECT * FROM yellow_taxi_trips LIMIT 10;
+
+  SELECT 
+      DATE(tpep_pickup_datetime) AS pickup_date,
+      COUNT(*) AS trips_count,
+      AVG(total_amount) AS avg_amount
+  FROM yellow_taxi_trips
+  GROUP BY DATE(tpep_pickup_datetime)
+  ORDER BY pickup_date;
+  ```
+
+
