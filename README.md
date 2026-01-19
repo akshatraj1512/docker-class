@@ -1,4 +1,4 @@
-# docker-class
+# docker-postgres-101
 
 ## 1. Executing Local Scripts inside a Docker Container (Named Volumes).
 
@@ -12,7 +12,7 @@
 docker run -it --entrypoint=bash -v $(pwd)/test:/app/test python:3.13.1-slim
 ```
 ```bash
-cd /app/test
+cd app/test
 ```
 ```bash
 python script.py
@@ -27,7 +27,7 @@ python script.py
 - In terminal:
 
 ```bash
-cd /pipeline
+cd pipeline
 uv run python pipeline.py <any_integer>
 ```
 ## 3. Creating a Dockerfile.
@@ -48,6 +48,16 @@ docker run -it test:pandas < any number >
 
 ```bash
 cd pipeline
+
+mkdir ny_taxi_postgres_data
+docker run -it \
+  -e POSTGRES_USER="root" \                           
+  -e POSTGRES_PASSWORD="root" \                          
+  -e POSTGRES_DB="ny_taxi" \                                #environment variables
+  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql \     #and bind mound
+  -p 5432:5432 \
+  postgres:18
+
 uv run pip install pgcli
 uv run pgcli -h localhost -p 5432 -u root -d ny_taxi
 ```
@@ -65,6 +75,18 @@ uv run pgcli -h localhost -p 5432 -u root -d ny_taxi
   
   \q
   ```
+
+If you want to use named volumes instead (managed by docker), run:
+
+```bash
+docker run -it --rm \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  -v ny_taxi_postgres_data:/var/lib/postgresql \   #named volume
+  -p 5432:5432 \
+  postgres:18
+```
 
 ## 5. Data processing with pandas and data ingestion (chunking).
 
